@@ -292,9 +292,12 @@ bool Trajectory::integrateForward(list<TrajectoryStep> &trajectory, double accel
 					&& getMinMaxPhaseSlope(before, getVelocityMaxPathVelocity(before), false) <= getVelocityMaxPathVelocityDeriv(before))
 				{
 					midpointPathVel = getVelocityMaxPathVelocity(midpoint);
+					if(midpointPathVel > getAccelerationMaxPathVelocity(midpoint))
+						after = midpoint;
+					else
+						break;
 				}
-
-				if(midpointPathVel > getAccelerationMaxPathVelocity(midpoint) || midpointPathVel > getVelocityMaxPathVelocity(midpoint))
+				else if(midpointPathVel > getAccelerationMaxPathVelocity(midpoint) || midpointPathVel > getVelocityMaxPathVelocity(midpoint))
 					after = midpoint;
 				else
 					before = midpoint;
