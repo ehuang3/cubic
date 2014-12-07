@@ -1,0 +1,19 @@
+###############################################################################
+# Config file for TRAJECTORIES
+#
+# This sets the following variables:
+# TRAJECTORIES_INCLUDE_DIRS - Directories containing the TRAJECTORIES include files.
+# TRAJECTORIES_LIBRARIES - Libraries needed to use TRAJECTORIES.
+# TRAJECTORIES_LIBRARY_DIRS - Directories that contain the TRAJECTORIES libraries.
+
+get_filename_component(CURRENT_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+set(TRAJECTORIES_INCLUDE_DIR
+  "@CMAKE_INSTALL_PREFIX@/include"
+  "@CMAKE_INSTALL_PREFIX@/include/trajectories"
+  "@Eigen_INCLUDE_DIRS@"
+)
+
+set(TRAJECTORIES_LIBRARY_DIRS "@CMAKE_INSTALL_PREFIX@/lib")
+
+set(TRAJECTORIES_LIBRARY trajectories)
