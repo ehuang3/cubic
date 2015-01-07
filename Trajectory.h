@@ -45,7 +45,7 @@ class Trajectory
 {
 public:
 	// Generates a time-optimal trajectory
-	Trajectory(const Path &path, const Eigen::VectorXd &maxVelocity, const Eigen::VectorXd &maxAcceleration);
+	Trajectory(const Path &path, const Eigen::VectorXd &maxVelocity, const Eigen::VectorXd &maxAcceleration, double timeStep = 0.001);
 	
 	~Trajectory(void);
 
@@ -79,17 +79,13 @@ private:
 	bool getNextAccelerationSwitchingPoint(double pathPos, TrajectoryStep &nextSwitchingPoint, double &beforeAcceleration, double &afterAcceleration);
 	bool getNextVelocitySwitchingPoint(double pathPos, TrajectoryStep &nextSwitchingPoint, double &beforeAcceleration, double &afterAcceleration);
 	bool integrateForward(std::list<TrajectoryStep> &trajectory, double acceleration);
-	void integrateBackward(std::list<TrajectoryStep> &trajectory, std::list<TrajectoryStep> &startTrajectory, double acceleration);
+	void integrateBackward(std::list<TrajectoryStep> &startTrajectory, double pathPos, double pathVel, double acceleration);
 	double getMinMaxPathAcceleration(double pathPosition, double pathVelocity, bool max);
 	double getMinMaxPhaseSlope(double pathPosition, double pathVelocity, bool max);
 	double getAccelerationMaxPathVelocity(double pathPos) const;
 	double getVelocityMaxPathVelocity(double pathPos) const;
 	double getAccelerationMaxPathVelocityDeriv(double pathPos);
 	double getVelocityMaxPathVelocityDeriv(double pathPos);
-	
-	TrajectoryStep getIntersection(const std::list<TrajectoryStep> &trajectory, std::list<TrajectoryStep>::iterator &it, const TrajectoryStep &linePoint1, const TrajectoryStep &linePoint2);
-	inline double getSlope(const TrajectoryStep &point1, const TrajectoryStep &point2);
-	inline double getSlope(std::list<TrajectoryStep>::const_iterator lineEnd);
 	
 	std::list<TrajectoryStep>::const_iterator getTrajectorySegment(double time) const;
 	
@@ -102,7 +98,7 @@ private:
 	std::list<TrajectoryStep> endTrajectory; // non-empty only if the trajectory generation failed.
 
 	static const double eps;
-	static const double timeStep;
+	const double timeStep;
 
 	mutable double cachedTime;
 	mutable std::list<TrajectoryStep>::const_iterator cachedTrajectorySegment;
