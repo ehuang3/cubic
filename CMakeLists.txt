@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.4.4 FATAL_ERROR)
-project(trajectories)
+project(cubic)
 
 ############################################################
 ## Libraries.
@@ -28,7 +28,7 @@ include_directories(
     )
 
 set(LIB_NAME
-    trajectories
+    cubic
     )
 
 ############################################################
@@ -70,3 +70,55 @@ INSTALL (
 
 CONFIGURE_FILE(cmake/${LIB_NAME}Config.cmake.in "${CMAKE_BINARY_DIR}/cmake/${LIB_NAME}Config.cmake" @ONLY)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/cmake/${LIB_NAME}Config.cmake DESTINATION share/${LIB_NAME})
+
+############################################################
+## Pymodule Build and Installation.
+############################################################
+
+find_package(PythonLibs 2.7 REQUIRED)
+find_package(Boost COMPONENTS python REQUIRED)
+find_package(BoostNumpy REQUIRED)
+find_package(GLOG REQUIRED)
+
+set(PYMODULE_H
+    )
+
+set(PYMODULE_SRC
+    export_EigenNumpy.cpp
+    pycubic_module.cpp
+    )
+
+include_directories(
+    ${Eigen_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
+    ${BoostNumpy_INCLUDE_DIRS}
+    ${GLOG_INCLUDE_DIRS}
+    )
+
+set(PYMODULE_NAME
+    _cubic
+    )
+
+ADD_COMPILE_OPTIONS(-std=c++11)
+
+ADD_LIBRARY(${PYMODULE_NAME}
+    SHARED
+    ${PYMODULE_H}
+    ${PYMODULE_H_NO_MODULE_INSTALL}
+    ${PYMODULE_SRC}
+    )
+
+TARGET_LINK_LIBRARIES(${PYMODULE_NAME}
+    ${LIB_NAME}
+    ${PYTHON_LIBRARIES}
+    ${Boost_LIBRARIES}
+    ${BoostNumpy_LIBRARY}
+    ${GLOG_LIBRARIES}
+    )
+
+SET_TARGET_PROPERTIES(${PYMODULE_NAME}
+    PROPERTIES
+    PREFIX ""
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/cubic"
+    )

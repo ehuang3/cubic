@@ -46,7 +46,7 @@ class Trajectory
 public:
 	// Generates a time-optimal trajectory
 	Trajectory(const Path &path, const Eigen::VectorXd &maxVelocity, const Eigen::VectorXd &maxAcceleration, double timeStep = 0.001);
-	
+
 	~Trajectory(void);
 
 	// Call this method after constructing the object to make sure the trajectory generation succeeded without errors.
