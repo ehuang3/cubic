@@ -122,3 +122,13 @@ SET_TARGET_PROPERTIES(${PYMODULE_NAME}
     PREFIX ""
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/cubic"
     )
+
+############################################################
+## Example.
+############################################################
+
+ADD_EXECUTABLE(example Example.cpp)
+
+TARGET_LINK_LIBRARIES(example
+    ${LIB_NAME}
+    )

@@ -34,6 +34,8 @@ BOOST_PYTHON_MODULE(_cubic)
         ("CubicSpline", no_init)
         .def("GetPosition", &Trajectory::getPosition)
         .def("GetVelocity", &Trajectory::getVelocity)
+        .def("GetDuration", &Trajectory::getDuration)
+        .def("IsValid", &Trajectory::isValid)
         ;
 
     def("CreateCubicSpline", &CreateCubicSpline)
