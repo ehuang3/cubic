@@ -1,0 +1,5 @@
+build/
+cubic.egg-info/
+*.pyc
+*.so
+*.txt

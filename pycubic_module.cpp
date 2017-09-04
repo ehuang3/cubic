@@ -23,10 +23,10 @@ boost::shared_ptr<Trajectory> CreateCubicSpline(Eigen::MatrixXd const & pts,
     // Create cubic spline.
     boost::shared_ptr<Trajectory> spline(new Trajectory(path, max_vel, max_accel, timestep));
 
-    std::cout << "c++ pts: \n" << pts << std::endl;
-    std::cout << "c++ max vel: \n" << max_vel << std::endl;
-    std::cout << "c++ max accel: \n" << max_accel << std::endl;
-    std::cout << "c++ duration: " << spline->getDuration() << std::endl;
+    // std::cout << "c++ pts: \n" << pts << std::endl;
+    // std::cout << "c++ max vel: \n" << max_vel << std::endl;
+    // std::cout << "c++ max accel: \n" << max_accel << std::endl;
+    // std::cout << "c++ duration: " << spline->getDuration() << std::endl;
 
     return spline;
 }

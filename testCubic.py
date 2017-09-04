@@ -28,13 +28,13 @@ class TestCubic(unittest.TestCase):
         max_vel = np.ones((d,))
         max_accel = np.ones((d,))
         spline = CreateCubicSpline(pts, max_vel, max_accel, 0.001)
-        print spline.IsValid()
+        # print spline.IsValid()
         T = np.zeros((132,))
         x = np.zeros((d,132))
         dx = np.zeros((d,132))
         t = 0.1
         i = 0
-        print spline.GetDuration()
+        # print spline.GetDuration()
         while t < spline.GetDuration():
             x_t  = spline.GetPosition(t)
             dx_t = spline.GetVelocity(t)
@@ -63,6 +63,32 @@ class TestCubic(unittest.TestCase):
 
         # plt.plot(T,x[1,:],'*-')
         # plt.show()
+
+    def test_Repeatibility(self):
+        h0 = np.array([10,5,np.pi/2],dtype=np.float)
+        h1 = np.array([-10,5,np.pi/2],dtype=np.float)
+        h2 = np.array([ 2.5, 5., 1.57079637])
+        pts = np.hstack((h0[:,None],h2[:,None]))
+        max_vel = np.ones((3,))
+        max_accel = np.ones((3,))
+        spline = CreateCubicSpline(pts, max_vel, max_accel, 0.001)
+        duration = spline.GetDuration()
+        hz = 60.0
+        duration = duration + 1
+        num_time_steps = int(np.ceil(duration * hz) + 1)
+        t = np.linspace(0, duration, num_time_steps)
+        print t[-1]
+        print duration
+        print spline.GetPosition(duration)
+        x = np.zeros((3,num_time_steps))
+        v = np.zeros((3,num_time_steps))
+        for i in range(len(t)):
+            x[:,i,None] = spline.GetPosition(t[i])
+            v[:,i,None] = spline.GetVelocity(t[i])
+        plt.plot(t, x[0,:])
+        plt.show()
+        
+        
 
 if __name__=='__main__':
     print
